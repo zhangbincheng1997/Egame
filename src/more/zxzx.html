@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <base href="../">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="基于区块链的游戏商店">
+    <meta name="keywords" content="区块链，游戏商店">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>游戏商店</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/flat-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/pagination.css"/>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/pagination.js"></script>
+</head>
+
+<script type="text/javascript">
+    $(function () {
+        $("#pagination").pagination(100, {
+            callback: pageCallback,
+            prev_text: '<<<',
+            next_text: '>>>',
+            ellipse_text: '...',
+            current_page: 0, // 当前选中的页面
+            items_per_page: 4, // 每页显示的条目数
+            num_display_entries: 4, // 连续分页主体部分显示的分页条目数
+            num_edge_entries: 1 // 两侧显示的首尾分页的条目数
+        });
+
+        function pageCallback(index, jq) {
+            // 防止首页循环回调
+            if (index == 0) return;
+            // TODO
+            var url = "zxzx?page=" + index; // TODO
+            window.location.href = url;
+        }
+    });
+</script>
+
+<body>
+
+<div id="wrap">
+
+    <!--左侧菜单栏-->
+    <script type="text/javascript" src="js/nav.js"></script>
+
+    <!--右侧内容栏-->
+    <div id="rightContent">
+        <!--右侧内容栏-->
+        <div role="tabpanel" class="tab-pane">
+
+            <!--顶部模块-->
+            <div class="check-div">
+                客服电话：10086
+            </div>
+
+            <!--最新资讯-->
+            <div class="data-div">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <a href="http://www.baidu.com">
+                            <img width="250" height="250" src="images/img1.jpg" alt="文章图片"/>
+                        </a>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="page-header">
+                            <a href="http://www.baidu.com"><h5 class="text-info">恭喜王者荣耀年收入破百亿！</h5></a>
+                            <small class="text-info">腾讯游戏 / 2018-01-01</small>
+                        </div>
+                        <p>
+                            无限时空中，时光的洪流汇聚于同一片大陆。机关术与魔道肆虐，让世界面目全非。英雄，那些熟知的名字，不可思议的聚集在一起。抛却了过往荣光，遵循野心与欲望，随心所欲寻求力量，乃至彼此追逐杀戮。
+                            而在一个又一个传奇的背后，召唤师的身影时隐时现，没错，他们，才是历史真正的创造者，生存或者毁灭，战争，似乎永无止境。
+                        </p>
+                    </div>
+                </div>
+                <hr/>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <a href="http://www.baidu.com">
+                            <img width="250" height="250" src="images/img2.jpg" alt="文章图片"/>
+                        </a>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="page-header">
+                            <a href="http://www.baidu.com"><h5 class="text-info">恭喜王者荣耀年收入破百亿！</h5></a>
+                            <small class="text-info">腾讯游戏 / 2018-01-01</small>
+                        </div>
+                        <p>
+                            无限时空中，时光的洪流汇聚于同一片大陆。机关术与魔道肆虐，让世界面目全非。英雄，那些熟知的名字，不可思议的聚集在一起。抛却了过往荣光，遵循野心与欲望，随心所欲寻求力量，乃至彼此追逐杀戮。
+                            而在一个又一个传奇的背后，召唤师的身影时隐时现，没错，他们，才是历史真正的创造者，生存或者毁灭，战争，似乎永无止境。
+                        </p>
+                    </div>
+                </div>
+                <hr/>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <a href="http://www.baidu.com">
+                            <img width="250" height="250" src="images/img3.jpg" alt="文章图片"/>
+                        </a>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="page-header">
+                            <a href="http://www.baidu.com"><h5 class="text-info">恭喜王者荣耀年收入破百亿！</h5></a>
+                            <small class="text-info">腾讯游戏 / 2018-01-01</small>
+                        </div>
+                        <p>
+                            无限时空中，时光的洪流汇聚于同一片大陆。机关术与魔道肆虐，让世界面目全非。英雄，那些熟知的名字，不可思议的聚集在一起。抛却了过往荣光，遵循野心与欲望，随心所欲寻求力量，乃至彼此追逐杀戮。
+                            而在一个又一个传奇的背后，召唤师的身影时隐时现，没错，他们，才是历史真正的创造者，生存或者毁灭，战争，似乎永无止境。
+                        </p>
+                    </div>
+                </div>
+                <hr/>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <a href="http://www.baidu.com">
+                            <img width="250" height="250" src="images/img4.jpg" alt="文章图片"/>
+                        </a>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="page-header">
+                            <a href="http://www.baidu.com"><h5 class="text-info">恭喜王者荣耀年收入破百亿！</h5></a>
+                            <small class="text-info">腾讯游戏 / 2018-01-01</small>
+                        </div>
+                        <p>
+                            无限时空中，时光的洪流汇聚于同一片大陆。机关术与魔道肆虐，让世界面目全非。英雄，那些熟知的名字，不可思议的聚集在一起。抛却了过往荣光，遵循野心与欲望，随心所欲寻求力量，乃至彼此追逐杀戮。
+                            而在一个又一个传奇的背后，召唤师的身影时隐时现，没错，他们，才是历史真正的创造者，生存或者毁灭，战争，似乎永无止境。
+                        </p>
+                    </div>
+                </div>
+                <hr/>
+            </div>
+
+            <!--底部分页-->
+            <footer class="footer">
+                <div id="pagination"></div>
+            </footer>
+
+        </div><!--右侧内容栏-->
+    </div><!--右侧内容栏-->
+
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        // TODO
+        $("#zxzx-menu").addClass("menu-item-active");
+    })
+</script>
+
+</body>
+</html>

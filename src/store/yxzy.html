@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <base href="../">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="基于区块链的游戏商店">
+    <meta name="keywords" content="区块链，游戏商店">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>游戏商店</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/flat-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/pagination.css"/>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/pagination.js"></script>
+    <script type="text/javascript" src="js/web3.min.js"></script><!--core-->
+    <script type="text/javascript" src="js/truffle-contract.js"></script><!--core-->
+    <script type="text/javascript" src="js/app_yxzy.js"></script><!--core-->
+</head>
+
+<style type="text/css">
+    .dashed_tbl {
+        width: 100%;
+        border-top: 1px dashed #333333;
+        border-left: 1px dashed #333333;
+    }
+
+    .dashed_tbl td {
+        border-bottom: 1px dashed #333333;
+        border-right: 1px dashed #333333;
+    }
+
+    .img-caption {
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.6);
+        color: white;
+        padding: 10px;
+        text-align: center;
+    }
+</style>
+
+<body>
+
+<div id="wrap">
+
+    <!--左侧菜单栏-->
+    <script type="text/javascript" src="js/nav.js"></script>
+
+    <!--右侧内容栏-->
+    <div id="rightContent">
+        <!--右侧内容栏-->
+        <div role="tabpanel" class="tab-pane">
+
+            <!--顶部模块-->
+            <div class="check-div">
+                <div class="col-xs-4">
+                    <a href="admin/fbyx.html">
+                        <button class="btn btn-yellow btn-xs">我要发布游戏</button>
+                    </a>
+                </div>
+                <div class="col-xs-4">
+                    <input type="text" class="form-control input-sm" placeholder="输入关键字搜索" id="keyword">
+                    <button class="btn btn-default btn-xs" id="searchBtn">查 询</button>
+                </div>
+                <div class="col-xs-4" style="padding-right: 40px;text-align: right;">
+                    <div class="btn-group">
+                        <button class="btn btn-default btn-xs" data-toggle="dropdown">类型<span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="wdyx?page=0&style=动作">动作</a></li>
+                            <li><a href="wdyx?page=0&style=冒险">冒险</a></li>
+                            <li><a href="wdyx?page=0&style=休闲">休闲</a></li>
+                            <li><a href="wdyx?page=0&style=策略">策略</a></li>
+                            <li><a href="wdyx?page=0&style=模拟">模拟</a></li>
+                            <li><a href="wdyx?page=0&style=免费">免费</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!--游戏主页-->
+            <div class="data-div">
+                <div class="row" id="mygame">
+                    <div class="col-sm-6 col-md-3" hidden><!--template-->
+                        <div class="thumbnail" id="10086">
+                            <div style="position: relative;">
+                                <a href="game.html">
+                                    <img id="cover" style="width: 400px;height: 240px;" src="images/dnf.jpg"
+                                         alt="游戏图片"/>
+                                </a>
+                                <figcaption id="name" class="img-caption">地下城与勇士</figcaption>
+                            </div>
+                            <div class="caption" style="text-align: center">
+                                <table class="dashed_tbl">
+                                    <tr>
+                                        <td>销量: <samp id="sales">100</samp></td>
+                                        <td>评分: <samp id="score">100</samp></td>
+                                    </tr>
+                                </table>
+                                <p style="text-align: left">
+                                    <span class="badge" id="style">冒险</span>
+                                    <span id="intro">在阿拉德大陆的文明之光闪耀之前，世界是一个无边的宇宙，孕育着各种形态的生命。这些生命分散在各种虚空异界和地下城堡里，用它们的勤劳和智慧，创建着世界的繁荣。......</span>
+                                </p>
+                                <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal">
+                                    购买 $100
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--底部分页-->
+            <footer class="footer">
+                <div id="pagination"></div>
+            </footer>
+
+            <!--购买-->
+            <div class="modal fade" id="modal" role="dialog" aria-labelledby="modalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="modalLabel">购买</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                确定要购买该游戏？购买后不可退款！
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-xs btn-default" data-dismiss="modal">取 消</button>
+                            <button type="button" class="btn btn-xs btn-danger" id="purchaseBtn">购 买</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+        </div>
+
+    </div><!--右侧内容栏-->
+</div><!--右侧内容栏-->
+
+</div>
+
+</body>
+</html>

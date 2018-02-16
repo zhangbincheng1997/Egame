@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="基于区块链的游戏商店">
+    <meta name="keywords" content="区块链，游戏商店">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>游戏商店</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/flat-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/detail.css"/>
+    <link rel="stylesheet" type="text/css" href="css/pagination.css"/>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/pagination.js"></script>
+    <script type="text/javascript" src="js/web3.min.js"></script><!--core-->
+    <script type="text/javascript" src="js/truffle-contract.js"></script><!--core-->
+    <script type="text/javascript" src="js/app_game.js"></script><!--core-->
+</head>
+
+<body>
+
+<div id="wrap">
+
+    <!--左侧菜单栏-->
+    <script type="text/javascript" src="js/nav.js"></script>
+
+    <!--右侧内容栏-->
+    <div id="rightContent">
+        <!--右侧内容栏-->
+        <div role="tabpanel" class="tab-pane">
+
+            <!--顶部模块-->
+            <div class="check-div">
+                抵制不良游戏 拒绝盗版游戏 注意自我保护 谨防受骗上当 适度游戏益脑 沉迷游戏伤身 合理安排时间 享受健康生活
+            </div>
+
+            <!-----游戏详情上部分开始------->
+            <div class="panelContainer">
+                <img id="cover" src="images/dnf.jpg" width="450" height="270"/>
+                <div class="info">
+                    <span id="id" hidden>0</span>
+                    <span class="name" id="name">地下城与勇士</span>
+                    <span class="badge" id="style">冒险</span>
+                    <p class="price">价格：<samp id="price">￥100.00</samp></p>
+                    <p class="discount">优惠：<samp id="discount">￥69.00</samp></p>
+                    <p class="normal">销量：<samp id="sales">100</samp></p>
+                    <p class="normal">评分：<samp id="score">100</samp></p>
+                    <p class="buy">
+                        <button id="firstbuy">立即购买</button>
+                        <button href="store/yxzy.html">返回主页</button>
+                    </p>
+                </div>
+            </div>
+            <!-----游戏详情上部分结束------->
+
+            <!--分割线-->
+            <p class="line"></p>
+
+            <!-----游戏详情下部分开始------->
+            <div class="panelContainer">
+                <p class="title" id="panel00">(>﹏<)</p>
+                <p>
+                    <span class="glyphicon glyphicon-user"></span>
+                    <samp id="owner">0xdb35A957F0C04a6739c48f4906D2aF09C447c0c4</samp>
+                <p>
+                    <span class="glyphicon glyphicon-time"></span>
+                    <samp id="date">2018-01-01</samp>
+                </p>
+
+                <p class="title" id="panel01">游戏简介</p>
+                <p id="intro">
+                    在阿拉德大陆的文明之光闪耀之前，世界是一个无边的宇宙，孕育着各种形态的生命。这些生命分散在各种虚空异界和地下城堡里，用它们的勤劳和智慧，创建着世界的繁荣。
+                    生存在完美大陆阿拉德的人类和精灵，也属于各种形态的生命之一。他们用诸神赋予的智慧，创造了被众多异界生命钦羡的阿拉德文明。相传，连接阿拉德大陆和其它虚空异界的天空之城，就是天族和魔族为方便往来阿拉德大陆而建造的。
+                    在各种虚空异界里，存在一种叫做“生命之水”的物体，可以使获得者拥有无限的生命。生命之水的出现，引起了各异界生命的争夺。魔族使徒“爆龙王”巴卡尔为抢夺生命之水，率领其手下的龙人和以赫尔德为中心的魔族使徒们展开了被称为“龙之战争”的魔族大战。
+                </p>
+
+                <p class="title" id="panel02">游戏玩法</p>
+                <p id="rules">
+                    （15级转职）狂战士→（50级一次觉醒）狱血魔神→（75级二次觉醒）帝血弑天
+                    感染卡赞瘟疫获得强大力量的鬼剑士。
+                    15级转职）剑魂→（50级一次觉醒）剑圣→（75级二次觉醒）剑神
+                    （不屈服于鬼神之力，穷其毕生钻习武器威力极限的鬼剑士。
+                    （15级转职）鬼泣→（50级一次觉醒）弑魂→（75级二次觉醒）黑暗君主
+                    掌控黑暗力量施放鬼神技能的鬼剑士。
+                    （15级转职）阿修罗→（50级一次觉醒）大暗黑天→（75级二次觉醒）天帝
+                    为了掌控波动之力，牺牲双眼的鬼剑士。
+                </p>
+
+                <p class="title" id="panel03">买家评价(2)</p>
+                <div class="row">
+                    <div class="col-sm-1">
+                        <img src="images/buyer.png"/>
+                        <p>张***1</p>
+                    </div>
+                    <div class="col-sm-11">
+                        <p>超级好玩的游戏，是兄弟就一起来玩！超级好玩的游戏，是兄弟就一起来玩！超级好玩的游戏，是兄弟就一起来玩！</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-1">
+                        <img src="images/buyer.png"/>
+                        <p>张***2</p>
+                    </div>
+                    <div class="col-sm-11">
+                        <p>超级好玩的游戏，是兄弟就一起来玩！超级好玩的游戏，是兄弟就一起来玩！超级好玩的游戏，是兄弟就一起来玩！</p>
+                    </div>
+                </div>
+
+                <!--底部分页-->
+                <footer class="footer">
+                    <div id="pagination"></div>
+                </footer>
+            </div>
+            <!-----游戏详情下部分开始------->
+
+        </div> <!--右侧内容栏-->
+    </div><!--右侧内容栏-->
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <base href="../">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="基于区块链的游戏商店">
+    <meta name="keywords" content="区块链，游戏商店">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>游戏商店</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/flat-ui.min.css"/>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="js/messages_zh.min.js"></script>
+    <script type="text/javascript" src="js/web3.min.js"></script><!--core-->
+    <script type="text/javascript" src="js/truffle-contract.js"></script><!--core-->
+    <script type="text/javascript" src="js/app_fbyx.js"></script><!--core-->
+</head>
+
+<style type="text/css">
+    .error {
+        font-weight: bold;
+        padding-left: 16px;
+        color: #FFC0CB;
+    }
+</style>
+
+<script type="text/javascript">
+    var introCnt = 200; // 简介字数最大限制
+    var rulesCnt = 200; // 玩法字数最大限制
+
+    $(function () {
+        // 简介字数限制
+        $("[name^='intro']").keyup(function () {
+            var num = introCnt - $(this).val().length;
+            if (num > 0) {
+                $(this).next('span').html('剩余' + num + '字数');
+            } else {
+                $(this).next('span').html('剩余 0 字数');
+                var c = $(this).val().substr(0, introCnt);
+                $(this).val(c);
+            }
+        });
+        $("[name^='intro']").blur(function () {
+            $(this).next('span').html('');
+        });
+
+        // 玩法字数限制
+        $("[name^='rules']").keyup(function () {
+            var num = rulesCnt - $(this).val().length;
+            if (num > 0) {
+                $(this).next('span').html('剩余' + num + '字数');
+            } else {
+                $(this).next('span').html('剩余 0 字数');
+                var c = $(this).val().substr(0, rulesCnt);
+                $(this).val(c);
+            }
+        });
+        $("[name^='rules']").blur(function () {
+            $(this).next('span').html('');
+        });
+    })
+</script>
+
+<body>
+
+<div id="wrap">
+
+    <!--左侧菜单栏-->
+    <script type="text/javascript" src="js/nav.js"></script>
+
+    <!--右侧内容栏-->
+    <div id="rightContent">
+        <!--右侧内容栏-->
+        <div role="tabpanel" class="tab-pane">
+
+            <!--顶部模块-->
+            <div class="check-div">
+                先解锁账户，再发布游戏。
+            </div>
+
+            <!--发布任务-->
+            <div class="center-block" style="background-color: #fff;width: 600px;padding: 50px 0;margin: 50px auto;">
+                <form class="form-horizontal" id="publishForm">
+                    <div class="form-group">
+                        <label for="name" class="col-xs-4 control-label">游戏: </label>
+                        <div class="col-xs-5">
+                            <input type="text" name="name" id="name" class="form-control input-sm duiqi"
+                                   style="margin-top: 7px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="style" class="col-xs-4 control-label">类型: </label>
+                        <div class="col-xs-5">
+                            <select name="style" id="style" class="form-control input-xs select-duiqi"
+                                    style="margin-top: 7px;">
+                                <option value="动作">动作</option>
+                                <option value="冒险">冒险</option>
+                                <option value="休闲">休闲</option>
+                                <option value="策略">策略</option>
+                                <option value="模拟">模拟</option>
+                                <option value="免费">免费</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="price" class="col-xs-4 control-label">价格: </label>
+                        <div class="col-xs-5">
+                            <input type="text" name="price" id="price" class="form-control input-sm duiqi"
+                                   style="margin-top: 7px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="intro" class="col-xs-4 control-label">简介: </label>
+                        <div class="col-xs-5">
+                            <textarea rows="5" name="intro" id="intro" class="form-control input-sm duiqi"></textarea>
+                            <span class="error"></span> <!-- error字数限制 -->
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="rules" class="col-xs-4 control-label">玩法: </label>
+                        <div class="col-xs-5">
+                            <textarea rows="5" name="rules" id="rules" class="form-control input-sm duiqi"></textarea>
+                            <span class="error"></span> <!-- error字数限制 -->
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cover" class="col-xs-4 control-label">封面: </label>
+                        <div class="col-xs-5">
+                            <!--upload-->
+                            <input type="file" name="cover" id="cover" accept="image/*">(jpg, png, bmp)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="file" class="col-xs-4 control-label">文件: </label>
+                        <div class="col-xs-5">
+                            <!--upload-->
+                            <input type="file" name="file" id="file">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-offset-5">
+                            <button type="reset" class="btn btn-xs btn-white">取 消</button>
+                            <button type="button" class="btn btn-xs btn-green" id="publishBtn">发 布</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div> <!--右侧内容栏-->
+    </div><!--右侧内容栏-->
+
+</div>
+
+</body>
+</html>

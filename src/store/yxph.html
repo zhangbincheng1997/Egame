@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <base href="../">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="基于区块链的游戏商店">
+    <meta name="keywords" content="区块链，游戏商店">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>游戏商店</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/flat-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/pagination.css"/>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/pagination.js"></script>
+</head>
+
+<script type="text/javascript">
+    $(function () {
+        $("#pagination").pagination(100, {
+            callback: pageCallback,
+            prev_text: '<<<',
+            next_text: '>>>',
+            ellipse_text: '...',
+            current_page: 0, // 当前选中的页面
+            items_per_page: 8, // 每页显示的条目数
+            num_display_entries: 4, // 连续分页主体部分显示的分页条目数
+            num_edge_entries: 1 // 两侧显示的首尾分页的条目数
+        });
+
+        function pageCallback(index, jq) {
+            // 防止首页循环回调
+            if (index == 0) return;
+            var url = "game?page=" + index; // TODO
+            window.location.href = url;
+        }
+    });
+</script>
+
+<body>
+
+<div id="wrap">
+
+    <!--左侧菜单栏-->
+    <script type="text/javascript" src="js/nav.js"></script>
+
+    <!--右侧内容栏-->
+    <div id="rightContent">
+        <!--右侧内容栏-->
+        <div role="tabpanel" class="tab-pane">
+
+            <!--顶部模块-->
+            <div class="check-div">
+                <div class="col-xs-4">
+                    <button class="btn btn-yellow btn-xs" id="salesBtn">销量榜</button>
+                    <button class="btn btn-yellow btn-xs" id="scoreBtn">评分榜</button>
+                    <button class="btn btn-yellow btn-xs" id="priceBtn">价格榜</button>
+                    <button class="btn btn-yellow btn-xs" id="allBtn">综合榜</button>
+                </div>
+            </div>
+
+            <!--文章列表-->
+            <div class="data-div">
+                <div class="row tableHeader">
+                    <div class="col-xs-1">排名</div>
+                    <div class="col-xs-1">游戏名</div>
+                    <div class="col-xs-3">所有者</div>
+                    <div class="col-xs-1">发布日期</div>
+                    <div class="col-xs-1">类型</div>
+                    <div class="col-xs-1">销量</div>
+                    <div class="col-xs-1">评分</div>
+                    <div class="col-xs-1">价格</div>
+                    <div class="col-xs-1">综合</div>
+                    <div class="col-xs-1">封面</div>
+                </div>
+                <div class="tablebody">
+                    <div class="row">
+                        <div class="col-xs-1" id="rank">1</div>
+                        <div class="col-xs-1" id="name">地下城与勇士</div>
+                        <div class="col-xs-3" id="owner">0xdb35A957F0C04a6739c48f4906D2aF09C447c0c4</div>
+                        <div class="col-xs-1" id="date">2018-01-01</div>
+                        <div class="col-xs-1" id="style">冒险</div>
+                        <div class="col-xs-1" id="sales">100</div>
+                        <div class="col-xs-1" id="score">100</div>
+                        <div class="col-xs-1" id="price">100</div>
+                        <div class="col-xs-1" id="all">100</div>
+                        <div class="col-xs-1">
+                            <a href="game.html"><img id="cover" style="width: 50px;height: 50px;" src="images/dnf.jpg"/></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--底部分页-->
+            <footer class="footer">
+                <div id="pagination"></div>
+            </footer>
+
+        </div><!--右侧内容栏-->
+    </div><!--右侧内容栏-->
+
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        // TODO
+        $("#yxph-menu").addClass("menu-item-active");
+    });
+</script>
+
+</body>
+</html>
