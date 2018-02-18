@@ -17,9 +17,9 @@
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/pagination.js"></script>
-    <script type="text/javascript" src="js/web3.min.js"></script><!--core-->
-    <script type="text/javascript" src="js/truffle-contract.js"></script><!--core-->
-    <script type="text/javascript" src="js/app_game.js"></script><!--core-->
+    <script type="text/javascript" src="app/web3.min.js"></script><!--core-->
+    <script type="text/javascript" src="app/truffle-contract.js"></script><!--core-->
+    <script type="text/javascript" src="app/game.js"></script><!--core-->
 </head>
 
 <body>
@@ -33,7 +33,6 @@
     <div id="rightContent">
         <!--右侧内容栏-->
         <div role="tabpanel" class="tab-pane">
-
             <!--顶部模块-->
             <div class="check-div">
                 抵制不良游戏 拒绝盗版游戏 注意自我保护 谨防受骗上当 适度游戏益脑 沉迷游戏伤身 合理安排时间 享受健康生活
@@ -46,13 +45,13 @@
                     <span id="id" hidden>0</span>
                     <span class="name" id="name">地下城与勇士</span>
                     <span class="badge" id="style">冒险</span>
-                    <p class="price">价格：<samp id="price">￥100.00</samp></p>
-                    <p class="discount">优惠：<samp id="discount">￥69.00</samp></p>
+                    <p class="pprice">价格：<samp id="pprice">￥100.00</samp></p>
+                    <p class="price">优惠：<samp id="price">￥69.00</samp></p>
                     <p class="normal">销量：<samp id="sales">100</samp></p>
                     <p class="normal">评分：<samp id="score">100</samp></p>
                     <p class="buy">
-                        <button id="firstbuy">立即购买</button>
-                        <button href="store/yxzy.html">返回主页</button>
+                        <button id="firstbuy" onclick="App.purchase()">立即购买</button>
+                        <button onclick="window.location.href='store/yxzy.html'">返回主页</button>
                     </p>
                 </div>
             </div>

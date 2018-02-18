@@ -17,9 +17,9 @@
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/pagination.js"></script>
-    <script type="text/javascript" src="js/web3.min.js"></script><!--core-->
-    <script type="text/javascript" src="js/truffle-contract.js"></script><!--core-->
-    <script type="text/javascript" src="js/app_yxzy.js"></script><!--core-->
+    <script type="text/javascript" src="app/web3.min.js"></script><!--core-->
+    <script type="text/javascript" src="app/truffle-contract.js"></script><!--core-->
+    <script type="text/javascript" src="app/yxzy.js"></script><!--core-->
 </head>
 
 <style type="text/css">
@@ -27,11 +27,17 @@
         width: 100%;
         border-top: 1px dashed #333333;
         border-left: 1px dashed #333333;
+        text-align: center;
     }
 
     .dashed_tbl td {
         border-bottom: 1px dashed #333333;
         border-right: 1px dashed #333333;
+    }
+
+    .img-cover {
+        width: 100%;
+        height: 240px;
     }
 
     .img-caption {
@@ -58,11 +64,10 @@
     <div id="rightContent">
         <!--右侧内容栏-->
         <div role="tabpanel" class="tab-pane">
-
             <!--顶部模块-->
             <div class="check-div">
                 <div class="col-xs-4">
-                    <a href="admin/fbyx.html">
+                    <a href="store/fbyx.html">
                         <button class="btn btn-yellow btn-xs">我要发布游戏</button>
                     </a>
                 </div>
@@ -90,28 +95,33 @@
             <div class="data-div">
                 <div class="row" id="mygame">
                     <div class="col-sm-6 col-md-3" hidden><!--template-->
-                        <div class="thumbnail" id="10086">
-                            <div style="position: relative;">
-                                <a href="game.html">
-                                    <img id="cover" style="width: 400px;height: 240px;" src="images/dnf.jpg"
-                                         alt="游戏图片"/>
-                                </a>
-                                <figcaption id="name" class="img-caption">地下城与勇士</figcaption>
-                            </div>
-                            <div class="caption" style="text-align: center">
+                        <div class="thumbnail">
+                            <a href="game.html?id=10086">
+                                <div style="position: relative;">
+                                    <img id="cover" class="img-cover" src="images/dnf.jpg" alt="游戏封面"/>
+                                    <figcaption id="name" class="img-caption">地下城与勇士</figcaption>
+                                </div>
+                            </a>
+                            <div class="caption">
                                 <table class="dashed_tbl">
                                     <tr>
                                         <td>销量: <samp id="sales">100</samp></td>
                                         <td>评分: <samp id="score">100</samp></td>
                                     </tr>
                                 </table>
-                                <p style="text-align: left">
-                                    <span class="badge" id="style">冒险</span>
-                                    <span id="intro">在阿拉德大陆的文明之光闪耀之前，世界是一个无边的宇宙，孕育着各种形态的生命。这些生命分散在各种虚空异界和地下城堡里，用它们的勤劳和智慧，创建着世界的繁荣。......</span>
-                                </p>
-                                <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal">
-                                    购买 $100
-                                </button>
+                                <span class="label label-info">类型</span>
+                                <samp id="style">冒险</samp>
+                                <br/>
+                                <span class="label label-info">简介</span>
+                                <samp id="intro">这是简介这是简介这是简介......</samp>
+                                <br/>
+                                <span class="label label-info">玩法</span>
+                                <samp id="rules">这是玩法这是玩法这是玩法......</samp>
+                                <div align="center">
+                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal"
+                                            onclick="App.set()">购买 $100
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -139,7 +149,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-xs btn-default" data-dismiss="modal">取 消</button>
-                            <button type="button" class="btn btn-xs btn-danger" id="purchaseBtn">购 买</button>
+                            <button type="button" class="btn btn-xs btn-danger" onclick="App.purchase()">购 买</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -148,7 +158,6 @@
             </div>
             <!-- /.modal -->
         </div>
-
     </div><!--右侧内容栏-->
 </div><!--右侧内容栏-->
 

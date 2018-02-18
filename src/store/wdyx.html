@@ -18,9 +18,9 @@
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/jquery.raty.min.js"></script>
     <script type="text/javascript" src="js/pagination.js"></script>
-    <script type="text/javascript" src="js/web3.min.js"></script><!--core-->
-    <script type="text/javascript" src="js/truffle-contract.js"></script><!--core-->
-    <script type="text/javascript" src="js/app_wdyx.js"></script><!--core-->
+    <script type="text/javascript" src="app/web3.min.js"></script><!--core-->
+    <script type="text/javascript" src="app/truffle-contract.js"></script><!--core-->
+    <script type="text/javascript" src="app/wdyx.js"></script><!--core-->
 </head>
 
 <style type="text/css">
@@ -28,11 +28,17 @@
         width: 100%;
         border-top: 1px dashed #333333;
         border-left: 1px dashed #333333;
+        text-align: center;
     }
 
     .dashed_tbl td {
         border-bottom: 1px dashed #333333;
         border-right: 1px dashed #333333;
+    }
+
+    .img-cover {
+        width: 100%;
+        height: 240px;
     }
 
     .img-caption {
@@ -45,15 +51,6 @@
         color: white;
         padding: 10px;
         text-align: center;
-    }
-
-    .img-star {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        border-radius: 24px;
-        background-color: rgba(0, 0, 0, 0.6);
-        color: white;
     }
 </style>
 
@@ -68,12 +65,11 @@
     <div id="rightContent">
         <!--右侧内容栏-->
         <div role="tabpanel" class="tab-pane">
-
             <!--顶部导航-->
             <div class="check-div">
                 <div class="col-xs-4">
-                    <button class="btn btn-yellow btn-xs" id="purchasedBtn">我购买的游戏</button>
-                    <button class="btn btn-yellow btn-xs" id="publishedBtn">我发布的游戏</button>
+                    <button class="btn btn-yellow btn-xs" onclick="App.getPurchasedGames()">我购买的游戏</button>
+                    <button class="btn btn-yellow btn-xs" onclick="App.getPublishedGames()">我发布的游戏</button>
                 </div>
                 <div class="col-xs-4">
                     <input type="text" class="form-control input-sm" placeholder="输入关键字搜索" id="keyword">
@@ -99,29 +95,34 @@
             <div class="data-div">
                 <div class="row" id="mygame">
                     <div class="col-sm-6 col-md-3" hidden><!--template-->
-                        <div class="thumbnail" id="10086">
-                            <div style="position: relative;">
-                                <a href="game.html">
-                                    <img id="cover" style="width: 400px;height: 240px;" src="images/dnf.jpg"
-                                         alt="游戏封面"/>
-                                </a>
-                                <figcaption id="name" class="img-caption">地下城与勇士</figcaption>
-                                <button class="img-star" data-toggle="modal" data-target="#modal">
-                                <span class="glyphicon glyphicon-thumbs-up"></span>
-                                </button>
-                            </div>
-                            <div class="caption" style="text-align: center">
+                        <div class="thumbnail">
+                            <a href="game.html?id=10086">
+                                <div style="position: relative;">
+                                    <img id="cover" class="img-cover" src="images/dnf.jpg" alt="游戏封面"/>
+                                    <figcaption id="name" class="img-caption">地下城与勇士</figcaption>
+                                </div>
+                            </a>
+                            <div class="caption">
                                 <table class="dashed_tbl">
                                     <tr>
                                         <td>销量: <samp id="sales">100</samp></td>
                                         <td>评分: <samp id="score">100</samp></td>
                                     </tr>
                                 </table>
-                                <p style="text-align: left">
-                                    <span class="badge" id="style">冒险</span>
-                                    <span id="intro">在阿拉德大陆的文明之光闪耀之前，世界是一个无边的宇宙，孕育着各种形态的生命。这些生命分散在各种虚空异界和地下城堡里，用它们的勤劳和智慧，创建着世界的繁荣。......</span>
-                                </p>
-                                <button class="btn btn-danger btn-xs" id="startBtn">开始游戏</button>
+                                <span class="label label-info">类型</span>
+                                <samp id="style">冒险</samp>
+                                <br/>
+                                <span class="label label-info">简介</span>
+                                <samp id="intro">这是简介这是简介这是简介......</samp>
+                                <br/>
+                                <span class="label label-info">玩法</span>
+                                <samp id="rules">这是玩法这是玩法这是玩法......</samp>
+                                <div align="center">
+                                    <button class="btn btn-danger btn-xs" onclick="App.start()">开始游戏</button>
+                                    <button data-toggle="modal" data-target="#modal" onclick="App.set()">
+                                        <span class="glyphicon glyphicon-thumbs-up"></span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -156,7 +157,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-xs btn-default" data-dismiss="modal">取 消</button>
-                            <button type="button" class="btn btn-xs btn-danger" id="starBtn">确 认</button>
+                            <button type="button" class="btn btn-xs btn-danger" onclick="App.evaluate()">确 认</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -165,7 +166,6 @@
             </div>
             <!-- /.modal -->
         </div>
-
     </div><!--右侧内容栏-->
 </div><!--右侧内容栏-->
 

@@ -17,9 +17,10 @@
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/jquery.validate.min.js"></script>
     <script type="text/javascript" src="js/messages_zh.min.js"></script>
-    <script type="text/javascript" src="js/web3.min.js"></script><!--core-->
-    <script type="text/javascript" src="js/truffle-contract.js"></script><!--core-->
-    <script type="text/javascript" src="js/app_fbyx.js"></script><!--core-->
+    <script type="text/javascript" src="app/web3.min.js"></script><!--core-->
+    <script type="text/javascript" src="app/truffle-contract.js"></script><!--core-->
+    <script type="text/javascript" src="app/ipfs.js"></script><!--core-->
+    <script type="text/javascript" src="app/fbyx.js"></script><!--core-->
 </head>
 
 <style type="text/css">
@@ -29,43 +30,6 @@
         color: #FFC0CB;
     }
 </style>
-
-<script type="text/javascript">
-    var introCnt = 200; // 简介字数最大限制
-    var rulesCnt = 200; // 玩法字数最大限制
-
-    $(function () {
-        // 简介字数限制
-        $("[name^='intro']").keyup(function () {
-            var num = introCnt - $(this).val().length;
-            if (num > 0) {
-                $(this).next('span').html('剩余' + num + '字数');
-            } else {
-                $(this).next('span').html('剩余 0 字数');
-                var c = $(this).val().substr(0, introCnt);
-                $(this).val(c);
-            }
-        });
-        $("[name^='intro']").blur(function () {
-            $(this).next('span').html('');
-        });
-
-        // 玩法字数限制
-        $("[name^='rules']").keyup(function () {
-            var num = rulesCnt - $(this).val().length;
-            if (num > 0) {
-                $(this).next('span').html('剩余' + num + '字数');
-            } else {
-                $(this).next('span').html('剩余 0 字数');
-                var c = $(this).val().substr(0, rulesCnt);
-                $(this).val(c);
-            }
-        });
-        $("[name^='rules']").blur(function () {
-            $(this).next('span').html('');
-        });
-    })
-</script>
 
 <body>
 
@@ -78,7 +42,6 @@
     <div id="rightContent">
         <!--右侧内容栏-->
         <div role="tabpanel" class="tab-pane">
-
             <!--顶部模块-->
             <div class="check-div">
                 先解锁账户，再发布游戏。
@@ -134,6 +97,7 @@
                         <div class="col-xs-5">
                             <!--upload-->
                             <input type="file" name="cover" id="cover" accept="image/*">(jpg, png, bmp)
+                            <a id="tip_cover" target='_blank' href='https://github.com/littleredhat1997'> </a>
                         </div>
                     </div>
                     <div class="form-group">
@@ -141,17 +105,18 @@
                         <div class="col-xs-5">
                             <!--upload-->
                             <input type="file" name="file" id="file">
+                            <a id="tip_file" target='_blank' href='https://github.com/littleredhat1997'> </a>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-xs-offset-5">
                             <button type="reset" class="btn btn-xs btn-white">取 消</button>
-                            <button type="button" class="btn btn-xs btn-green" id="publishBtn">发 布</button>
+                            <button type="button" class="btn btn-xs btn-green" onclick="App.publish()">发 布</button>
+                            <span id="tip"> </span>
                         </div>
                     </div>
                 </form>
             </div>
-
         </div> <!--右侧内容栏-->
     </div><!--右侧内容栏-->
 
