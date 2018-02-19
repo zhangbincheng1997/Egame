@@ -53,15 +53,21 @@ App = {
     },
 
     purchase: function () {
-        var price = web3.toWei($("#price").val());
-        // call purchase
         store.deployed().then(function (storeInstance) {
-            storeInstance.purchase(id, {from: web3.eth.accounts[0], value: price}).then(function (result) {
-                alert("购买成功: " + result);
-            }).catch(function (err) {
-                alert("购买失败: " + err);
-            }).finally(function () {
-                // None
+            // call isPurchase
+            storeInstance.isPurchase.call(id).then(function (result) {
+                if (result) {
+                    console.log("已购买")
+                } else {
+                    // call purchase
+                    storeInstance.purchase(id, {from: web3.eth.accounts[0]}).then(function (result) {
+                        alert("购买成功: " + result);
+                    }).catch(function (err) {
+                        alert("购买失败: " + err);
+                    }).finally(function () {
+                        // None
+                    });
+                }
             });
         });
     }

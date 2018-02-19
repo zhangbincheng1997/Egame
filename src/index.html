@@ -14,6 +14,9 @@
     <link rel="stylesheet" type="text/css" href="css/flat-ui.min.css"/>
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="app/web3.min.js"></script><!--core-->
+    <script type="text/javascript" src="app/truffle-contract.js"></script><!--core-->
+    <script type="text/javascript" src="app/index.js"></script><!--core-->
 </head>
 
 <body>
@@ -27,7 +30,49 @@
     <div id="rightContent">
         <!--右侧内容栏-->
         <div role="tabpanel" class="tab-pane">
-            <a href="store/yxzy.html"><img src="images/bg.jpg" style="width: 100%; "></a>
+            <!--顶部导航-->
+            <div class="check-div">
+                专业打造目前国内最安全、便捷的游戏币交易平台！
+            </div>
+
+            <!--我的代币-->
+            <div style="position: absolute;text-align: center;left: 300px;width: 400px;">
+                <h5>My Token</h5>
+                <table class="table table-bordered">
+                    <tr>
+                        <td>合约游戏币 (ETH)</td>
+                        <td id="all_yxb">100000</td>
+                    </tr>
+                    <tr>
+                        <td>我的游戏币 (YXB)</td>
+                        <td id="my_yxb">0</td>
+                    </tr>
+                    <tr>
+                        <td>兑换比例 (YXB / ETH)</td>
+                        <td id="rate">10</td>
+                    </tr>
+                    <tr>
+                        <td>兑换范围 (YXB , ETH)</td>
+                        <td>(0, 100)</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!--发布任务-->
+            <div style="position: absolute;text-align: center;left: 800px;top: 130px;">
+                <div class="row">
+                    <label>ETH --> YXB: </label>
+                    <input type="text" id="count_yxb"> YXB = <samp id="price_yxb" style="color: #f00;">0.000</samp> ETH <br/>
+                    <button type="button" class="btn btn-xs btn-green" onclick="App.recharge()" style="margin-left: 50px">兑 换</button>
+                    <span id="tip_yxb"> </span>
+                </div>
+                <div class="row">
+                    <label>YXB --> ETH: </label>
+                    <input type="text" id="count_eth"> YXB = <samp id="price_eth" style="color: #f00;">0.000</samp> ETH <br/>
+                    <button type="button" class="btn btn-xs btn-green" onclick="App.redeem()" style="margin-left: 50px">兑 换</button>
+                    <span id="tip_eth"> </span>
+                </div>
+            </div>
         </div><!--右侧内容栏-->
     </div><!--右侧内容栏-->
 

@@ -105,26 +105,31 @@ App = {
     },
 
     purchaseId: 0,
-    price: 0,
     set: function (_id, _price) {
         purchaseId = _id;
-        price = _price;
     },
 
     // 购买
     purchase: function () {
-        alert(purchaseId + ' ' + price);
-        // call purchase
+        alert(purchaseId);
         store.deployed().then(function (storeInstance) {
-            storeInstance.purchase(id, {from: web3.eth.accounts[0], value: price}).then(function (result) {
-                alert("购买成功: " + result);
-            }).catch(function (err) {
-                alert("购买失败: " + err);
-            }).finally(function () {
-                // 关闭窗口
-                $("#modal").modal('hide');
+            // call isPurchase
+            storeInstance.isPurchase.call(id).then(function (result) {
+                if (result) {
+                    console.log("已购买")
+                } else {
+                    // call purchase
+                    storeInstance.purchase(id, {from: web3.eth.accounts[0]}).then(function (result) {
+                        alert("购买成功: " + result);
+                    }).catch(function (err) {
+                        alert("购买失败: " + err);
+                    }).finally(function () {
+                        // 关闭窗口
+                        $("#modal").modal('hide');
+                    });
+                }
             });
-        })
+        });
     }
 };
 

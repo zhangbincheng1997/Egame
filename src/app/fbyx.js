@@ -26,6 +26,8 @@ App = {
             store.setProvider(web3.currentProvider);
             // TODO
         });
+
+        // TODO watch
     },
 
     ////////////////////////////////////////////////////////////////////////////////
