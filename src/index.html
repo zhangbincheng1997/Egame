@@ -37,40 +37,46 @@
 
             <!--我的代币-->
             <div style="position: absolute;text-align: center;left: 300px;width: 400px;">
-                <h5>My Token</h5>
+                <h5>Contract Token</h5>
                 <table class="table table-bordered">
                     <tr>
-                        <td>合约游戏币 (ETH)</td>
-                        <td id="all_yxb">100000</td>
+                        <td>合约游戏币 (YXB)</td>
+                        <td id="all_yxb">100000 / 100000</td>
                     </tr>
+                    <tr>
+                        <td>合约以太币 (ETH)</td>
+                        <td id="all_eth">0</td>
+                    </tr>
+                </table>
+                <h5>My Token</h5>
+                <table class="table table-bordered">
                     <tr>
                         <td>我的游戏币 (YXB)</td>
                         <td id="my_yxb">0</td>
                     </tr>
                     <tr>
-                        <td>兑换比例 (YXB / ETH)</td>
-                        <td id="rate">10</td>
-                    </tr>
-                    <tr>
-                        <td>兑换范围 (YXB , ETH)</td>
-                        <td>(0, 100)</td>
+                        <td>我的以太币 (ETH)</td>
+                        <td id="my_eth">0</td>
                     </tr>
                 </table>
+                <p>兑换比例: </p>
+                <p>1 YXB = <samp id="rate1" style="color: #f00">0.1</samp> ETH</p>
+                <p>1 ETH = <samp id="rate2" style="color: #f00">10</samp> YXB</p>
             </div>
 
             <!--发布任务-->
-            <div style="position: absolute;text-align: center;left: 800px;top: 130px;">
+            <div style="position: absolute;text-align: center;left: 800px;top: 200px;">
                 <div class="row">
-                    <label>ETH --> YXB: </label>
-                    <input type="text" id="count_yxb"> YXB = <samp id="price_yxb" style="color: #f00;">0.000</samp> ETH <br/>
-                    <button type="button" class="btn btn-xs btn-green" onclick="App.recharge()" style="margin-left: 50px">兑 换</button>
-                    <span id="tip_yxb"> </span>
+                    <label>买入游戏币: </label>
+                    <input type="text" id="buy_yxb"> YXB = <samp id="buy_eth" style="color: #f00;">0.000</samp> ETH
+                    <button class="btn btn-xs btn-green" onclick="App.buy()" style="margin-left: 50px">兑 换</button>
+                    <span id="tip_buy"> </span>
                 </div>
                 <div class="row">
-                    <label>YXB --> ETH: </label>
-                    <input type="text" id="count_eth"> YXB = <samp id="price_eth" style="color: #f00;">0.000</samp> ETH <br/>
-                    <button type="button" class="btn btn-xs btn-green" onclick="App.redeem()" style="margin-left: 50px">兑 换</button>
-                    <span id="tip_eth"> </span>
+                    <label>卖出游戏币: </label>
+                    <input type="text" id="sell_yxb"> YXB = <samp id="sell_eth" style="color: #f00;">0.000</samp> ETH
+                    <button class="btn btn-xs btn-green" onclick="App.sell()" style="margin-left: 50px">兑 换</button>
+                    <span id="tip_sell"> </span>
                 </div>
             </div>
         </div><!--右侧内容栏-->

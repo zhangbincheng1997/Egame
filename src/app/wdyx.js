@@ -78,6 +78,7 @@ App = {
 
     pageCallback: function (index, jq) {
         console.log(index);
+        $("#bg").hide();
         $("#mygame").html('');
 
         var start = index * 8; // 开始
@@ -136,7 +137,7 @@ App = {
         store.deployed().then(function (storeInstance) {
             storeInstance.getGameFile.call(id).then(function (result) {
                 alert('进入游戏: ' + result);
-                window.open(result);
+                window.location.href = result;
             }).catch(function (err) {
                 alert("内部错误: " + err);
             }).finally(function () {
@@ -146,36 +147,30 @@ App = {
     },
 
     evaluateId: 0,
+    score: 0,
     set: function (_id) {
         evaluateId = _id;
         // call isEvaluated
         store.deployed().then(function (storeInstance) {
             storeInstance.isEvaluated.call(evaluateId).then(function (result) {
-                if (result) {
+                if (result) { // TODO TEST
                     // 已评价
-                    $("#star").raty({
-                        score: 0
-                    });
-                    $("#star").html('已评价');
-                    // 不可点击
-                    $(this).attr('disabled', true);
+                    // TODO
                 }
             }).catch(function (err) {
                 alert("内部错误: " + err);
             }).finally(function () {
-                // 关闭窗口
-                $('#modal').modal('hide');
+                // None
             });
         });
     },
 
     // 评分
     evaluate: function () {
-        var star = $("#star").attr("data-score");
-        alert(evaluateId + ' ' + star);
+        alert(evaluateId + ' ' + score);
         // call getGameFile
         store.deployed().then(function (storeInstance) {
-            storeInstance.evaluate(evaluateId, star, {from: web3.eth.accounts[0]}).then(function (result) {
+            storeInstance.evaluate(evaluateId, score, {from: web3.eth.accounts[0]}).then(function (result) {
                 alert("评分成功: " + result);
             }).catch(function (err) {
                 alert("评分失败: " + err);
@@ -199,7 +194,15 @@ $(function () {
     $('#modal').on('show.bs.modal', function () {
         // 重置星星
         $('#star').raty({
-            score: 0
+            number: 10, // 星星上限
+            targetType: 'hint', // number是数字值 hint是设置的数组值
+            target: '#hint',
+            targetKeep: true,
+            targetText: '请选择评分',
+            hints: ['差', '中', '良', '优', '五星', 'A', 'S', 'SS', 'SSS', '超神'],
+            click: function(score, evt) {
+                App.score = score;
+            }
         });
     });
 });

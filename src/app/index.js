@@ -21,7 +21,7 @@ App = {
             // Set the provider for our contract
             store.setProvider(web3.currentProvider);
             // TODO
-            // App.getInfo();
+            App.getInfo();
         });
     },
 
@@ -32,7 +32,15 @@ App = {
         // call getBalanceInfo
         store.deployed().then(function (storeInstance) {
             storeInstance.getBalanceInfo.call(web3.eth.accounts[0]).then(function (result) {
-                alert(result);
+                $("#all_yxb").html(result[1] + ' / ' + result[0]);
+                var all_eth = (result[2] / 1e18).toFixed(3);
+                $("#all_eth").html(all_eth);
+                $("#my_yxb").html(result[3].toString());
+                var my_eth = (result[4] / 1e18).toFixed(3);
+                $("#my_eth").html(my_eth);
+                rate = result[5] / 1e18;
+                $("#rate1").html(rate.toFixed(3));
+                $("#rate2").html((1 / rate).toFixed(3));
             }).catch(function (err) {
                 alert("请解锁用户: " + err);
             }).finally(function () {
@@ -42,74 +50,81 @@ App = {
     },
 
     // 购买游戏币
-    recharge: function () {
-        var num = $(this).val();
+    buy: function () {
+        $("#tip_buy").html('正在购买......');
+        var num = $("#buy_yxb").val(); // 买入的游戏币
+        if (num <= 0 || num >= 100) return;
         // call publish
         store.deployed().then(function (storeInstance) {
-            storeInstance.recharge({
+            storeInstance.buy({
                 from: web3.eth.accounts[0],
-                price: web3.toWei(num, 'ether')
+                value: web3.toWei(num * App.rate, 'ether')
             }).then(function (result) {
                 alert("兑换成功");
             }).catch(function (err) {
                 alert("兑换失败: " + err);
             }).finally(function () {
                 // 重新加载
-                // window.location.reload();
+                window.location.reload();
             });
         });
     },
 
-    // 赎回以太币
-    redeem: function () {
-        var num = $(this).val();
+    // 卖出游戏币
+    sell: function () {
+        $("#tip_sell").html('正在购买......');
+        var num = $("#sell_yxb").val(); // 卖出的游戏币
+        if (num <= 0 || num >= 100) return;
         // call publish
         store.deployed().then(function (storeInstance) {
-            storeInstance.redeem(num, {from: web3.eth.accounts[0]}).then(function (result) {
+            storeInstance.sell(num, {from: web3.eth.accounts[0]}).then(function (result) {
                 alert("兑换成功");
             }).catch(function (err) {
                 alert("兑换失败: " + err);
             }).finally(function () {
                 // 重新加载
-                // window.location.reload();
+                window.location.reload();
             });
         });
     }
 };
 
-
-var introCnt = 100; // 简介字数最大限制
-var rulesCnt = 100; // 玩法字数最大限制
 $(function () {
     // ##### note #####
     App.init();
     // ##### note #####
 
-    // 游戏币兑换限制
-    $("#count_yxb").bind('input propertychange', function () {
+    // 游戏币买入限制
+    $("#buy_yxb").bind('input propertychange', function () {
         var num = $(this).val();
         if (0 < num && num < 100) {
-            $("#price_yxb").html((num * App.rate).toFixed(3));
+            var p = (num * App.rate).toFixed(3);
+            $("#buy_eth").html(p);
         } else {
-            $("#price_yxb").html('0.000');
+            $("#buy_eth").html('0.000');
         }
     }).blur(function () {
-        if (0 < num && num < 100) {
+        var num = $(this).val();
+        if (num != '' && num <= 0 || num >= 100) {
             alert('非法数字');
+            $(this).val('');
         }
     });
 
-    // 以太币兑换限制
-    $("#count_eth").bind('input propertychange', function () {
+    // 游戏币卖出限制
+    $("#sell_yxb").bind('input propertychange', function () {
         var num = $(this).val();
         if (0 < num && num < 100) {
-            $("#price_eth").html((num * App.rate).toFixed(3));
+            var p = (num * App.rate).toFixed(3);
+            $("#sell_eth").html(p);
         } else {
-            $("#price_eth").html('0.000');
+            $("#sell_eth").html('0.000');
         }
     }).blur(function () {
-        if (0 < num && num < 100) {
+        var num = $(this).val();
+        if (num != '' && num <= 0 || num >= 100) {
             alert('非法数字');
+            $(this).val('');
         }
     });
 });
