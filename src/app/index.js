@@ -31,7 +31,7 @@ App = {
     getInfo: function () {
         // call getBalanceInfo
         store.deployed().then(function (storeInstance) {
-            storeInstance.getBalanceInfo.call(web3.eth.accounts[0]).then(function (result) {
+            storeInstance.getBalanceInfo.call().then(function (result) {
                 $("#all_yxb").html(result[1] + ' / ' + result[0]);
                 var all_eth = (result[2] / 1e18).toFixed(3);
                 $("#all_eth").html(all_eth);

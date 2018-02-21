@@ -16,6 +16,7 @@
     <link rel="stylesheet" type="text/css" href="css/pagination.css"/>
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jquery.raty.min.js"></script>
     <script type="text/javascript" src="js/pagination.js"></script>
     <script type="text/javascript" src="app/web3.min.js"></script><!--core-->
     <script type="text/javascript" src="app/truffle-contract.js"></script><!--core-->
@@ -90,33 +91,35 @@
                     为了掌控波动之力，牺牲双眼的鬼剑士。
                 </p>
 
-                <p class="title" id="panel03">买家评价(2)</p>
-                <div class="row">
-                    <div class="col-sm-1">
-                        <img src="images/buyer.png"/>
-                        <p>张***1</p>
+                <p class="title" id="panel03">买家评价(<samp id="comments_cnt">0</samp>)</p>
+                <div id="comments">
+                    <div class="row" ><!--template-->
+                        <div class="col-sm-1">
+                            <img src="images/buyer.png"/>
+                            <samp>***888</samp>
+                        </div>
+                        <div class="col-sm-11">
+                            <p>2018年01月01日 00:00</p>
+                            <p name="star" data-score="5"></p>
+                            <p>超级好玩的游戏，是兄弟就一起来玩！超级好玩的游戏，是兄弟就一起来玩！超级好玩的游戏，是兄弟就一起来玩！</p>
+                        </div>
                     </div>
-                    <div class="col-sm-11">
-                        <p>超级好玩的游戏，是兄弟就一起来玩！超级好玩的游戏，是兄弟就一起来玩！超级好玩的游戏，是兄弟就一起来玩！</p>
+                    <hr/>
+                    <div class="row" hidden><!--template-->
+                        <div class="col-sm-1">
+                            <img src="images/buyer.png"/>
+                            <samp>***888</samp>
+                        </div>
+                        <div class="col-sm-11">
+                            <p>2018年01月01日 00:00</p>
+                            <p name="star" data-score="5"></p>
+                            <p>超级好玩的游戏，是兄弟就一起来玩！超级好玩的游戏，是兄弟就一起来玩！超级好玩的游戏，是兄弟就一起来玩！</p>
+                        </div>
                     </div>
+                    <hr/>
                 </div>
-                <div class="row">
-                    <div class="col-sm-1">
-                        <img src="images/buyer.png"/>
-                        <p>张***2</p>
-                    </div>
-                    <div class="col-sm-11">
-                        <p>超级好玩的游戏，是兄弟就一起来玩！超级好玩的游戏，是兄弟就一起来玩！超级好玩的游戏，是兄弟就一起来玩！</p>
-                    </div>
-                </div>
-
-                <!--底部分页-->
-                <footer class="footer">
-                    <div id="pagination"></div>
-                </footer>
             </div>
-            <!-----游戏详情下部分开始------->
-
+            <!-----游戏详情下部分结束------->
         </div> <!--右侧内容栏-->
     </div><!--右侧内容栏-->
 

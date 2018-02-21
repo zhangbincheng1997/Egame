@@ -27,6 +27,7 @@ App = {
 
     ////////////////////////////////////////////////////////////////////////////////
 
+    id: 0,
     getGame: function () {
         id = getQueryVariable('id');
         // call getGameInfo
@@ -49,18 +50,52 @@ App = {
             }).finally(function () {
                 // None
             });
+            storeInstance.getCommentLength.call(id).then(function (clen) {
+                $("#comments_cnt").html(clen.toString());
+                for (var i = 0; i < clen; i++) {
+                    let id = i; // note: var id = i; false
+                    // call getGameInfo
+                    store.deployed().then(function (storeInstance) {
+                        storeInstance.getGameInfo.call(id).then(function (result) {
+                            var content = '';
+                            content += '<div class="row">'
+                                + '<div class="col-sm-1">'
+                                + '<img src="images/buyer.png"/>'
+                                + '<samp>***' + result[0].substr(-3) + '</samp>'
+                                + '</div>'
+                                + '<div class="col-sm-11">'
+                                + '<p>' + fmtDate(result[1]) + '</p>'
+                                + '<p name="star" data-score="' + result[2] + '"></p>'
+                                + '<p>' + result[3] + '</p>'
+                                + '</div>'
+                                + '</div>'
+                                + '<hr/>';
+                            $("#comments").append(content);
+                        }).catch(function (err) {
+                            alert("获取错误: " + err);
+                        }).finally(function () {
+                            // None
+                        });
+                    });
+                }
+            });
         });
     },
 
+    // 购买
     purchase: function () {
         store.deployed().then(function (storeInstance) {
             // call isPurchase
-            storeInstance.isPurchase.call(id).then(function (result) {
+            storeInstance.isPurchased.call(id).then(function (result) {
                 if (result) {
-                    console.log("已购买")
+                    console.log("已购买");
                 } else {
                     // call purchase
-                    storeInstance.purchase(id, {from: web3.eth.accounts[0]}).then(function (result) {
+                    storeInstance.purchase(id, {
+                        from: web3.eth.accounts[0],
+                        gas: 4712388,
+                        gasPrice: 100000000000
+                    }).then(function (result) {
                         alert("购买成功: " + result);
                     }).catch(function (err) {
                         alert("购买失败: " + err);
@@ -86,17 +121,29 @@ function getQueryVariable(variable) {
     return (false);
 }
 
-// timestamp -> yyyy-MM-dd
-function fmtDate(obj) {
-    var date = new Date(obj * 1000);
-    var y = 1900 + date.getYear();
-    var m = "0" + (date.getMonth() + 1);
-    var d = "0" + date.getDate();
-    return y + "-" + m.substring(m.length - 2, m.length) + "-" + d.substring(d.length - 2, d.length);
+// timestamp -> yyyy-MM-dd HH:mm:ss
+function fmtDate(timestamp) {
+    var date = new Date(timestamp * 1000); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+    Y = date.getFullYear() + '-';
+    M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+    D = date.getDate() + ' ';
+    h = date.getHours() + ':';
+    m = date.getMinutes() + ':';
+    s = date.getSeconds();
+    return Y + M + D + h + m + s;
 }
 
 $(function () {
     // ##### note #####
     App.init();
     // ##### note #####
+
+    // 设置星星
+    $("[name^='star']").raty({
+        number: 10, // 星星上限
+        readOnly: true,
+        score: function () {
+            return $(this).attr('data-score');
+        },
+    });
 });

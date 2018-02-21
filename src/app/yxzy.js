@@ -111,15 +111,18 @@ App = {
 
     // 购买
     purchase: function () {
-        alert(purchaseId);
         store.deployed().then(function (storeInstance) {
             // call isPurchase
-            storeInstance.isPurchase.call(id).then(function (result) {
+            storeInstance.isPurchased.call(purchaseId).then(function (result) {
                 if (result) {
-                    console.log("已购买")
+                    console.log("已购买");
                 } else {
                     // call purchase
-                    storeInstance.purchase(id, {from: web3.eth.accounts[0]}).then(function (result) {
+                    storeInstance.purchase(purchaseId, {
+                        from: web3.eth.accounts[0],
+                        gas: 4712388,
+                        gasPrice: 100000000000
+                    }).then(function (result) {
                         alert("购买成功: " + result);
                     }).catch(function (err) {
                         alert("购买失败: " + err);
