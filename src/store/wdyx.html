@@ -104,7 +104,7 @@
 
             <!--我的游戏-->
             <div class="data-div">
-                <div class="row" id="mygame">
+                <div class="row" id="games">
                     <div class="col-sm-6 col-md-3" hidden><!--template-->
                         <div class="thumbnail">
                             <a href="game.html?id=10086">
@@ -129,8 +129,8 @@
                                 <span class="label label-info">玩法</span>
                                 <samp id="rules">这是玩法这是玩法这是玩法......</samp>
                                 <div align="center">
-                                    <button class="btn btn-danger btn-xs" onclick="App.start()">开始游戏</button>
-                                    <button data-toggle="modal" data-target="#modal" onclick="App.set()">
+                                    <button class="btn btn-danger btn-xs" onclick="App.start(10086)">开始游戏</button>
+                                    <button data-toggle="modal" data-target="#modal" onclick="App.set(10086)">
                                         <span class="glyphicon glyphicon-thumbs-up"></span>
                                     </button>
                                 </div>

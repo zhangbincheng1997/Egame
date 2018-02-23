@@ -35,8 +35,6 @@
         function pageCallback(index, jq) {
             // 防止首页循环回调
             if (index == 0) return;
-            var url = "game?page=" + index; // TODO
-            window.location.href = url;
         }
     });
 </script>
@@ -76,8 +74,8 @@
                     <div class="col-xs-1">综合</div>
                     <div class="col-xs-1">封面</div>
                 </div>
-                <div class="tablebody">
-                    <div class="row">
+                <div class="tableBody">
+                    <div class="row"><!--template-->
                         <div class="col-xs-1" id="rank">1</div>
                         <div class="col-xs-1" id="name">地下城与勇士</div>
                         <div class="col-xs-3" id="owner">0xdb35A957F0C04a6739c48f4906D2aF09C447c0c4</div>

@@ -1,26 +1,22 @@
 App = {
-    web3: null,
-    store: null,
-
     init: function () {
         // Is there an injected web3 instance?
         if (typeof web3 !== 'undefined') {
-            web3 = new Web3(web3.currentProvider);
+            window.web3 = new Web3(web3.currentProvider);
         } else {
             // If no injected web3 instance is detected, fall back to Ganache
-            web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'));
+            window.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'));
         }
-
         App.initContract();
     },
 
     initContract: function () {
         $.getJSON('Store.json', function (data) {
             // Get the necessary contract artifact file and instantiate it with truffle-contract
-            store = TruffleContract(data);
+            window.store = TruffleContract(data);
             // Set the provider for our contract
-            store.setProvider(web3.currentProvider);
-            // TODO
+            window.store.setProvider(web3.currentProvider);
+            // Init app
             App.getGames();
         });
     },
@@ -28,10 +24,9 @@ App = {
     ////////////////////////////////////////////////////////////////////////////////
 
     getGames: function () {
-        // call getGameLength
         store.deployed().then(function (storeInstance) {
             storeInstance.getGameLength.call().then(function (result) {
-                totalNum = parseInt(result);
+                window.totalNum = result;
                 $("#pagination").pagination(totalNum, {
                     callback: App.pageCallback,
                     prev_text: '<<<',
@@ -44,25 +39,20 @@ App = {
                 });
             }).catch(function (err) {
                 alert("内部错误: " + err);
-            }).finally(function () {
-                // None
             });
         });
     },
 
     pageCallback: function (index, jq) {
         console.log(index);
-        $("#mygame").html('');
+        $("#games").html('');
 
         var start = index * 8; // 开始
         var end = Math.min((index + 1) * 8, totalNum); // 结束
         for (var i = start; i < end; i++) {
             let id = i; // note: var id = i; false
-            // call getGameInfo
             store.deployed().then(function (storeInstance) {
                 storeInstance.getGameInfo.call(id).then(function (result) {
-                    console.log(result);
-                    console.log(id);
                     var content = '';
                     content += '<div class="col-sm-6 col-md-3" >'
                         + '<div class="thumbnail">'
@@ -88,46 +78,40 @@ App = {
                         + '<span class="label label-info">玩法</span>'
                         + '<samp id="rules">' + result[4].substr(0, 20) + '......</samp>'
                         + '<div align="center">'
-                        + '<button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal" onclick="App.set(' + id + ', ' + result[5] + ')">'
-                        + '购买$ ' + (result[5] / 1e18)
+                        + '<button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal" onclick="App.set(' + id + ')">'
+                        + '购买$ ' + (result[5])
                         + '</button>'
                         + '</div>'
                         + '</div>'
                         + '</div>';
-                    $("#mygame").append(content);
+                    $("#games").append(content);
                 }).catch(function (err) {
-                    alert("获取错误: " + err);
-                }).finally(function () {
-                    // None
+                    alert("内部错误: " + err);
                 });
             });
         }
     },
 
-    purchaseId: 0,
-    set: function (_id, _price) {
-        purchaseId = _id;
+    set: function (_id) {
+        window.purchaseId = _id;
     },
 
-    // 购买
     purchase: function () {
         store.deployed().then(function (storeInstance) {
-            // call isPurchase
             storeInstance.isPurchased.call(purchaseId).then(function (result) {
                 if (result) {
-                    console.log("已购买");
+                    alert("已购买");
+                    $("#modal").modal('hide');
                 } else {
                     // call purchase
                     storeInstance.purchase(purchaseId, {
                         from: web3.eth.accounts[0],
-                        gas: 4712388,
-                        gasPrice: 100000000000
+                        gas: 140000
                     }).then(function (result) {
-                        alert("购买成功: " + result);
+                        alert("购买成功");
+                        $("#modal").modal('hide');
                     }).catch(function (err) {
                         alert("购买失败: " + err);
-                    }).finally(function () {
-                        // 关闭窗口
                         $("#modal").modal('hide');
                     });
                 }

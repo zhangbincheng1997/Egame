@@ -1,33 +1,27 @@
 App = {
-    web3: null,
-    ipfs: null,
-    store: null,
-
     init: function () {
         // connect to ipfs daemon API server
-        ipfs = window.IpfsApi('localhost', '5001');
+        window.ipfs = window.IpfsApi('localhost', '5001');
 
         // Is there an injected web3 instance?
         if (typeof web3 !== 'undefined') {
-            web3 = new Web3(web3.currentProvider);
+            window.web3 = new Web3(web3.currentProvider);
         } else {
             // If no injected web3 instance is detected, fall back to Ganache
-            web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'));
+            window.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'));
         }
-
         App.initContract();
     },
 
     initContract: function () {
         $.getJSON('Store.json', function (data) {
             // Get the necessary contract artifact file and instantiate it with truffle-contract
-            store = TruffleContract(data);
+            window.store = TruffleContract(data);
             // Set the provider for our contract
-            store.setProvider(web3.currentProvider);
-            // TODO
+            window.store.setProvider(web3.currentProvider);
+            // Init app
+            // ......
         });
-
-        // TODO watch
     },
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -41,10 +35,9 @@ App = {
         var style = $("#style").val();
         var intro = $("#intro").val();
         var rules = $("#rules").val();
-        var price = web3.toWei($("#price").val());
+        var price = $("#price").val();
         var cover = $("#cover")[0].files[0];
         var file = $("#file")[0].files[0];
-        if (!cover || !file) return;
 
         // 上传到 IPFS
         cover = 'https://ipfs.io/ipfs/' + await App.upload(cover);
@@ -57,16 +50,17 @@ App = {
 
     upload: function (f) {
         return new Promise(function (resolve, reject) {
-            let reader = new window.FileReader();
+            let reader = new FileReader();
             reader.onloadend = function () {
-                const buffer = window.IpfsApi().Buffer.from(reader.result);
-                ipfs.add(buffer, {progress: (prog) => console.log(`received: ${prog}`)})
-                    .then((response) => {
-                        console.log(response[0].hash);
-                        resolve(response[0].hash);
-                    }).catch((err) => {
-                    console.error(err);
-                    resolve(false);
+                const buffer = ipfs.Buffer.from(reader.result);
+                ipfs.add(buffer, {
+                    progress: (prog) => console.log(`received: ${prog}`)
+                }).then((response) => {
+                    console.log(response[0].hash);
+                    resolve(response[0].hash);
+                }).catch((err) => {
+                    alert("IPFS 发生错误");
+                    window.location.reload();
                 })
             };
             reader.readAsArrayBuffer(f);
@@ -74,23 +68,20 @@ App = {
     },
 
     handlePublish: function (name, style, intro, rules, price, cover, file) {
-        // call publish
         store.deployed().then(function (storeInstance) {
-            storeInstance.publish(name, style, intro, rules, price, cover, file, {from: web3.eth.accounts[0]}).then(function (result) {
+            storeInstance.publish(name, style, intro, rules, price, cover, file, {
+                from: web3.eth.accounts[0]
+            }).then(function (result) {
                 alert("发布成功");
+                window.location.reload();
             }).catch(function (err) {
                 alert("发布失败: " + err);
-            }).finally(function () {
-                // 重新加载
                 window.location.reload();
             });
         });
     }
 };
 
-
-var introCnt = 200; // 简介字数最大限制
-var rulesCnt = 200; // 玩法字数最大限制
 $(function () {
     // ##### note #####
     App.init();
@@ -100,6 +91,7 @@ $(function () {
     $("#fbyx-menu").addClass("menu-item-active");
 
     // 简介限制
+    var introCnt = 1000; // 简介字数最大限制
     $("[name^='intro']").keyup(function () {
         var num = introCnt - $(this).val().length;
         if (num > 0) {
@@ -114,6 +106,7 @@ $(function () {
     });
 
     // 玩法限制
+    var rulesCnt = 1000; // 玩法字数最大限制
     $("[name^='rules']").keyup(function () {
         var num = rulesCnt - $(this).val().length;
         if (num > 0) {
@@ -143,11 +136,11 @@ $(function () {
             },
             intro: {
                 required: true,
-                rangelength: [1, 200]
+                rangelength: [1, 1000]
             },
             rules: {
                 required: true,
-                rangelength: [1, 200]
+                rangelength: [1, 1000]
             },
             cover: {
                 required: true

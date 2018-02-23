@@ -1,106 +1,86 @@
 App = {
-    web3: null,
-    store: null,
-
     init: function () {
         // Is there an injected web3 instance?
         if (typeof web3 !== 'undefined') {
-            web3 = new Web3(web3.currentProvider);
+            window.web3 = new Web3(web3.currentProvider);
         } else {
             // If no injected web3 instance is detected, fall back to Ganache
-            web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'));
+            window.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'));
         }
-
         App.initContract();
     },
 
     initContract: function () {
         $.getJSON('Store.json', function (data) {
             // Get the necessary contract artifact file and instantiate it with truffle-contract
-            store = TruffleContract(data);
+            window.store = TruffleContract(data);
             // Set the provider for our contract
-            store.setProvider(web3.currentProvider);
-            // TODO
+            window.store.setProvider(web3.currentProvider);
+            // Init app
             App.getGame();
         });
     },
 
     ////////////////////////////////////////////////////////////////////////////////
 
-    id: 0,
     getGame: function () {
-        id = getQueryVariable('id');
-        // call getGameInfo
+        window.gid = getQueryVariable('id');
         store.deployed().then(function (storeInstance) {
-            storeInstance.getGameInfo.call(id).then(function (result) {
-                console.log(result);
+            storeInstance.getGameInfo.call(gid).then(function (result) {
                 $("#owner").html(result[0]);
                 $("#name").html(result[1]);
                 $("#style").html(result[2]);
                 $("#intro").html(result[3]);
-                $("#rules").html(result[4]);
-                $("#pprice").html(result[5] / 1e18); // fake
-                $("#price").html(result[5] / 1e18);
+                $("#rules").html(result[4].toString());
+                $("#price").html(result[5].toString() * 100); // fake price
+                $("#discount").html(result[5].toString());
                 $("#sales").html(result[6].toString());
                 $("#score").html(result[7].toString());
                 $("#date").html(fmtDate(result[8].toString()));
                 $("#cover").attr('src', result[9]);
             }).catch(function (err) {
                 alert("内部错误: " + err);
-            }).finally(function () {
-                // None
             });
-            storeInstance.getCommentLength.call(id).then(function (clen) {
+            storeInstance.getCommentLength.call(gid).then(function (clen) {
                 $("#comments_cnt").html(clen.toString());
                 for (var i = 0; i < clen; i++) {
-                    let id = i; // note: var id = i; false
-                    // call getGameInfo
-                    store.deployed().then(function (storeInstance) {
-                        storeInstance.getGameInfo.call(id).then(function (result) {
-                            var content = '';
-                            content += '<div class="row">'
-                                + '<div class="col-sm-1">'
-                                + '<img src="images/buyer.png"/>'
-                                + '<samp>***' + result[0].substr(-3) + '</samp>'
-                                + '</div>'
-                                + '<div class="col-sm-11">'
-                                + '<p>' + fmtDate(result[1]) + '</p>'
-                                + '<p name="star" data-score="' + result[2] + '"></p>'
-                                + '<p>' + result[3] + '</p>'
-                                + '</div>'
-                                + '</div>'
-                                + '<hr/>';
-                            $("#comments").append(content);
-                        }).catch(function (err) {
-                            alert("获取错误: " + err);
-                        }).finally(function () {
-                            // None
-                        });
+                    let cid = i; // note: var id = i; false
+                    storeInstance.getCommentInfo.call(gid, cid).then(function (result) {
+                        var content = '';
+                        content += '<div class="row">'
+                            + '<div class="col-sm-1">'
+                            + '<img src="images/buyer.png"/>'
+                            + '<samp>***' + result[0].substr(-3) + '</samp>'
+                            + '</div>'
+                            + '<div class="col-sm-11">'
+                            + '<p>' + fmtDate(result[1].toString()) + '</p>'
+                            + '<p name="star" data-score="' + result[2] + '"></p>'
+                            + '<p>' + result[3] + '</p>'
+                            + '</div>'
+                            + '</div>'
+                            + '<hr/>';
+                        $("#comments").append(content);
+                    }).catch(function (err) {
+                        alert("内部错误: " + err);
                     });
                 }
             });
         });
     },
 
-    // 购买
     purchase: function () {
         store.deployed().then(function (storeInstance) {
-            // call isPurchase
-            storeInstance.isPurchased.call(id).then(function (result) {
+            storeInstance.isPurchased.call(gid).then(function (result) {
                 if (result) {
                     console.log("已购买");
                 } else {
-                    // call purchase
-                    storeInstance.purchase(id, {
+                    storeInstance.purchase(gid, {
                         from: web3.eth.accounts[0],
-                        gas: 4712388,
-                        gasPrice: 100000000000
+                        gas: 140000
                     }).then(function (result) {
-                        alert("购买成功: " + result);
+                        alert("购买成功");
                     }).catch(function (err) {
                         alert("购买失败: " + err);
-                    }).finally(function () {
-                        // None
                     });
                 }
             });

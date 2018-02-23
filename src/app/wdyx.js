@@ -1,39 +1,33 @@
 App = {
-    web3: null,
-    store: null,
-
     init: function () {
         // Is there an injected web3 instance?
         if (typeof web3 !== 'undefined') {
-            web3 = new Web3(web3.currentProvider);
+            window.web3 = new Web3(web3.currentProvider);
         } else {
             // If no injected web3 instance is detected, fall back to Ganache
-            web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'));
+            window.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'));
         }
-
         App.initContract();
     },
 
     initContract: function () {
         $.getJSON('Store.json', function (data) {
             // Get the necessary contract artifact file and instantiate it with truffle-contract
-            store = TruffleContract(data);
+            window.store = TruffleContract(data);
             // Set the provider for our contract
-            store.setProvider(web3.currentProvider);
-            // TODO
+            window.store.setProvider(web3.currentProvider);
+            // Init app
+            // ......
         });
     },
 
     ////////////////////////////////////////////////////////////////////////////////
 
-    totalNum: 0,
-    gameList: null,
     getPurchasedGames: function () {
-        // call getPurchasedList
         store.deployed().then(function (storeInstance) {
             storeInstance.getPurchasedGames.call().then(function (result) {
-                gameList = result; // 保存列表
-                totalNum = result.length;
+                window.gameList = result;
+                window.totalNum = result.length;
                 $("#pagination").pagination(totalNum, {
                     callback: App.pageCallback,
                     prev_text: '<<<',
@@ -46,18 +40,15 @@ App = {
                 });
             }).catch(function (err) {
                 alert("内部错误: " + err);
-            }).finally(function () {
-                // None
             });
         });
     },
 
     getPublishedGames: function () {
-        // call getPurchasedList
         store.deployed().then(function (storeInstance) {
             storeInstance.getPublishedGames.call().then(function (result) {
-                gameList = result; // 保存列表
-                totalNum = result.length;
+                window.gameList = result; // 保存列表
+                window.totalNum = result.length;
                 $("#pagination").pagination(totalNum, {
                     callback: App.pageCallback,
                     prev_text: '<<<',
@@ -70,8 +61,6 @@ App = {
                 });
             }).catch(function (err) {
                 alert("内部错误: " + err);
-            }).finally(function () {
-                // None
             });
         });
     },
@@ -79,16 +68,14 @@ App = {
     pageCallback: function (index, jq) {
         console.log(index);
         $("#bg").hide();
-        $("#mygame").html('');
+        $("#games").html('');
 
         var start = index * 8; // 开始
         var end = Math.min((index + 1) * 8, totalNum); // 结束
         for (var i = start; i < end; i++) {
-            let id = i; // note: var id = i; false
-            // call getGameInfo
+            let id = gameList[i]; // note: var id = i; false
             store.deployed().then(function (storeInstance) {
-                storeInstance.getGameInfo.call(gameList[id]).then(function (result) {
-                    console.log(result);
+                storeInstance.getGameInfo.call(id).then(function (result) {
                     var content = '';
                     content += '<div class="col-sm-6 col-md-3" >'
                         + '<div class="thumbnail">'
@@ -121,51 +108,46 @@ App = {
                         + '</div>'
                         + '</div>'
                         + '</div>';
-                    $("#mygame").append(content);
+                    $("#games").append(content);
                 }).catch(function (err) {
                     alert("内部错误: " + err);
-                }).finally(function () {
-                    // None
                 });
             });
         }
     },
 
-    // 开始游戏
     start: function (id) {
-        // call getGameFile
         store.deployed().then(function (storeInstance) {
             storeInstance.getGameFile.call(id).then(function (result) {
                 alert('进入游戏: ' + result);
                 window.location.href = result;
             }).catch(function (err) {
                 alert("内部错误: " + err);
-            }).finally(function () {
-                // None
+                window.location.reload();
             });
         });
     },
 
-    evaluateId: 0,
-    evaluateScore: 0,
     set: function (_id) {
-        evaluateId = _id;
-        // call isEvaluated
+        window.evaluateId = _id;
+        window.evaluateScore = 10;
         store.deployed().then(function (storeInstance) {
             storeInstance.isEvaluated.call(evaluateId).then(function (result) {
                 if (result != 0) {
                     // 已评价
-                    $("#starBtn").html('已评价');
+                    $("#starBtn").html('已 评');
                     $("#starBtn").attr("disabled", true);
-                    // 设置星星
+                    // 重置星星
                     $('#star').raty({
                         number: 10, // 星星上限
-                        score: result,
                         targetType: 'hint', // number是数字值 hint是设置的数组值
                         target: '#hint',
                         targetKeep: true,
-                        readOnly: true,
+                        targetText: '请选择评分',
                         hints: ['差', '中', '良', '优', '五星', 'A', 'S', 'SS', 'SSS', '超神'],
+                        click: function (score, evt) {
+                            window.evaluateScore = score;
+                        }
                     });
                 } else {
                     // 未评价
@@ -180,44 +162,36 @@ App = {
                         targetText: '请选择评分',
                         hints: ['差', '中', '良', '优', '五星', 'A', 'S', 'SS', 'SSS', '超神'],
                         click: function (score, evt) {
-                            App.evaluateScore = score;
+                            window.evaluateScore = score;
                         }
                     });
                 }
             }).catch(function (err) {
                 alert("内部错误: " + err);
-            }).finally(function () {
-                // None
             });
         });
     },
 
-    // 评分
     evaluate: function () {
-        if (App.evaluateScore == 0) {
-            alert('请选择评分!!!');
-            return;
-        }
         var content = $("#content").val();
         if (content == '') {
-            content = '对方很高冷,什么也没有说...';
+            content = '对方很高冷,什么也没有说......';
         }
-        alert(evaluateId + ' ' + App.evaluateScore + ' ' + content);
-        // call getGameFile
+        console.log(evaluateId + ' ' + evaluateScore + ' ' + content);
         store.deployed().then(function (storeInstance) {
-            storeInstance.evaluate(evaluateId, App.evaluateScore, content, {from: web3.eth.accounts[0]}).then(function (result) {
-                alert("评分成功: " + result);
+            storeInstance.evaluate(evaluateId, evaluateScore, content, {
+                from: web3.eth.accounts[0],
+            }).then(function (result) {
+                alert("评价成功");
+                $('#modal').modal('hide');
             }).catch(function (err) {
-                alert("评分失败: " + err);
-            }).finally(function () {
-                // 关闭窗口
+                alert("评价失败: " + err);
                 $('#modal').modal('hide');
             });
         });
     }
 };
 
-var contentCnt = 100;
 $(function () {
     // ##### note #####
     App.init();
@@ -227,6 +201,7 @@ $(function () {
     $("#wdyx-menu").addClass("menu-item-active");
 
     // 留言限制
+    var contentCnt = 200;
     $("[name^='content']").keyup(function () {
         var num = contentCnt - $(this).val().length;
         if (num > 0) {

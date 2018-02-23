@@ -32,18 +32,18 @@
     margin-bottom: 10px;
 }
 
-.info .pprice, .price, .normal {
+.info .price, .discount, .normal {
     background: rgba(232, 232, 232, 0.5);
 }
 
-.info .pprice samp {
+.info .price samp {
     color: #000;
     font-family: "微软雅黑";
     font-size: 14px;
     text-decoration: line-through;
 }
 
-.info .price samp {
+.info .discount samp {
     color: #D00;
     font-family: "微软雅黑";
     font-weight: bold;
@@ -76,7 +76,7 @@
     text-align: center;
 }
 
-#firstbuy {
+#buy {
     color: #fff;
     background-color: #f00;
 }
