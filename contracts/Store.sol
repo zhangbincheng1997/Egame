@@ -79,7 +79,7 @@ contract Store is Token {
         mapping(uint=>Comment) comments;    // 评价列表
     }
 
-    // 评论
+    // 评价
     struct Comment {
         address buyer;  // 购买者
         uint date;      // 日期

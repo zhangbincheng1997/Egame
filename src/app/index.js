@@ -17,30 +17,25 @@ App = {
             // Set the provider for our contract
             window.store.setProvider(web3.currentProvider);
             // Init app
-            App.getInfo();
+            App.getBalanceInfo();
         });
     },
 
     ////////////////////////////////////////////////////////////////////////////////
 
-    getInfo: function () {
-        store.deployed().then(function (storeInstance) {
-            storeInstance.getBalanceInfo.call().then(function (result) {
-                window.all_yxb = result[2].toNumber();
-                var all_eth = (result[3] / 1e18).toFixed(3);
-                window.my_yxb = result[4].toNumber();
-                var my_eth = (result[5] / 1e18).toFixed(3);
-                window.rate = result[1] / 1e18; // global
-                $("#all_yxb").html(all_yxb);
-                $("#all_eth").html(all_eth);
-                $("#my_yxb").html(my_yxb);
-                $("#my_eth").html(my_eth);
-                $("#rate1").html(rate.toFixed(3));
-                $("#rate2").html((1 / rate).toFixed(3));
-            }).catch(function (err) {
-                alert("请解锁用户: " + err);
-            });
-        });
+    getBalanceInfo: async function () {
+        var result = await App._getBalanceInfo();
+        window.all_yxb = result[2].toNumber();
+        var all_eth = (result[3] / 1e18).toFixed(3);
+        window.my_yxb = result[4].toNumber();
+        var my_eth = (result[5] / 1e18).toFixed(3);
+        window.rate = result[1] / 1e18;
+        $("#all_yxb").html(all_yxb);
+        $("#all_eth").html(all_eth);
+        $("#my_yxb").html(my_yxb);
+        $("#my_eth").html(my_eth);
+        $("#rate1").html(rate.toFixed(3));
+        $("#rate2").html((1 / rate).toFixed(3));
     },
 
     buy: function () {
@@ -74,6 +69,20 @@ App = {
             }).catch(function (err) {
                 alert("兑换失败: " + err);
                 window.location.reload();
+            });
+        });
+    },
+
+    ////////////////////////////////////////////////////////////////////////////////
+
+    _getBalanceInfo: function () {
+        return new Promise(function (resolve, reject) {
+            store.deployed().then(function (storeInstance) {
+                storeInstance.getBalanceInfo.call().then(function (result) {
+                    resolve(result);
+                }).catch(function (err) {
+                    alert("请解锁用户: " + err);
+                });
             });
         });
     }

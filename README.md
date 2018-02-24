@@ -1,35 +1,61 @@
 # 基于 Ethereum 和 IPFS 的游戏平台
+游戏平台只是一个简单演示，方便迁移到其他项目。
 
 ## 项目展示
-1. 兑换代币
+1. 发布游戏 账号一
 ![alt text](docs/1.png "title")
-2. 发布游戏
+2. 兑换代币 账号二
 ![alt text](docs/2.png "title")
-3. 游戏主页
+3. 购买游戏 账号二
 ![alt text](docs/3.png "title")
-4. 其他功能: 查看已购买的游戏、查看已发布的游戏、开始游戏、评价游戏......
+4. 评价游戏 账号二
 ![alt text](docs/4.png "title")
-5. 后续功能: 搜索、分类、游戏排行、最新资讯、帮助中心......
-[ERC20 代币标准](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md)
+5. 游戏展示
+![alt text](docs/5.png "title")
+6. 其他功能: 查看已购买的游戏、查看已发布的游戏、开始游戏(伪)......
+7. 后续功能: 搜索、分类、游戏排行、最新资讯、帮助中心......
+代币合约可以采用[ERC20 代币标准](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md)
 
 ## 准备工作
 
-### 安装 metamask 以太坊钱包(谷歌浏览器插件)
-1. download from https://chrome.google.com/webstore/category/extensions  
-![alt text](docs/5.png "title")
-2. save `MetaMask Seed Words`  
+### 安装 IPFS 星际文件系统
+1. 安装
+```
+$ wget https://dist.ipfs.io/go-ipfs/v0.4.13/go-ipfs_v0.4.13_linux-amd64.tar.gz
+$ tar -zxvf go-ipfs_v0.4.13_linux-amd64.tar.gz
+$ cd go-ipfs
+$ sudo mv ipfs /usr/bin/ipfs
+$ sudo chmod 755 /usr/bin/ipfs
+```
+2. 配置
+```
+$ ipfs init
+$ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '["PUT", "GET", "POST", "OPTIONS"]'
+$ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["*"]'
+```
+3. 启动
+```
+$ ipfs daemon
+open http://localhost:5001/webui
+```
 ![alt text](docs/6.png "title")
-3. set `Customer RPC`  
+
+### 安装 metamask 以太坊钱包插件
+1. [download](https://chrome.google.com/webstore/category/extensions)  
 ![alt text](docs/7.png "title")
+2. save `Setting -> Reveal Seed Words`  
+![alt text](docs/8.png "title")
+3. set `Setting -> Customer RPC` as http://127.0.0.1:7545  
+![alt text](docs/9.png "title")
 
 ### 安装 truffle 以太坊开发框架
-1. 安装命令
+1. 安装
 ```
 sudo apt-get install nodejs
 sudo apt-get install npm
 sudo npm install -g truffle
 ```
-2. 框架目录
+2. 目录
 ```
 contracts/: Directory for Solidity contracts
 migrations/: Directory for scriptable deployment files
@@ -38,22 +64,33 @@ truffle.js: Truffle configuration file
 ```
 
 ### 安装 ganache 以太坊测试环境
-1. download from http://truffleframework.com/ganache/  
-![alt text](docs/8.png "title")
-2. open the ganache, set Mnemonic as your MetaMask Seed Words, and Restart  
-![alt text](docs/9.png "title")
-3. open the metamask, Reset Account.  
+1. [download](http://truffleframework.com/ganache/)  
 ![alt text](docs/10.png "title")
+2. open the ganache, set Mnemonic as your MetaMask Seed Words, and Restart  
+![alt text](docs/11.png "title")
+3. open the metamask, Reset Account.  
+![alt text](docs/12.png "title")
 
 ### 重点说明
-1. 每次 重启 ganache 都要 重置 metamask!
-2. 每次 重启 ganache 都要 重置 metamask!
-3. 每次 重启 ganache 都要 重置 metamask!
+1. Every time you open ganache have to `reset` metamask!
+2. Every time you open ganache have to `reset` metamask!
+3. Every time you open ganache have to `reset` metamask!
 
 ## 项目运行
-1. 编译合约命令: truffle compile
-2. 部署合约命令: truffle migrate
-3. 启动服务器命令: npm run dev
+```
+# 启动 IPFS
+$ ipfs daemon
+# 启动 ganache
+$ ./ganache
+# 进入工作空间
+$ cd mygame
+# 编译
+$ truffle compile
+# 部署
+$ truffle migrate
+# 启动
+$ npm run dev
+```
 
 ## 更多教程
 1. 文档

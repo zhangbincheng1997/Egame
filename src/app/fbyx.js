@@ -27,7 +27,7 @@ App = {
     ////////////////////////////////////////////////////////////////////////////////
 
     publish: async function () {
-        if (!$("#publishForm").valid()) return;
+        if (!$("#form").valid()) return;
         $("#tip").html('<span style="color:blue">正在发布...</span>');
 
         // 获取数据
@@ -40,31 +40,12 @@ App = {
         var file = $("#file")[0].files[0];
 
         // 上传到 IPFS
-        cover = 'https://ipfs.io/ipfs/' + await App.upload(cover);
-        file = 'https://ipfs.io/ipfs/' + await App.upload(file);
+        cover = 'https://ipfs.io/ipfs/' + await App._ipfsadd(cover);
+        file = 'https://ipfs.io/ipfs/' + await App._ipfsadd(file);
         $("#tip_cover").html(cover).attr('href', cover);
         $("#tip_file").html(file).attr('href', file);
         // 上传到 Ethereum
         App.handlePublish(name, style, intro, rules, price, cover, file);
-    },
-
-    upload: function (f) {
-        return new Promise(function (resolve, reject) {
-            let reader = new FileReader();
-            reader.onloadend = function () {
-                const buffer = ipfs.Buffer.from(reader.result);
-                ipfs.add(buffer, {
-                    progress: (prog) => console.log(`received: ${prog}`)
-                }).then((response) => {
-                    console.log(response[0].hash);
-                    resolve(response[0].hash);
-                }).catch((err) => {
-                    alert("IPFS 发生错误");
-                    window.location.reload();
-                })
-            };
-            reader.readAsArrayBuffer(f);
-        })
     },
 
     handlePublish: function (name, style, intro, rules, price, cover, file) {
@@ -78,6 +59,27 @@ App = {
                 alert("发布失败: " + err);
                 window.location.reload();
             });
+        });
+    },
+
+    ////////////////////////////////////////////////////////////////////////////////
+
+    _ipfsadd: function (f) {
+        return new Promise(function (resolve, reject) {
+            let reader = new FileReader();
+            reader.onloadend = function () {
+                const buffer = ipfs.Buffer.from(reader.result);
+                ipfs.add(buffer, {
+                    progress: (prog) => console.log(`received: ${prog}`)
+                }).then((response) => {
+                    console.log(response[0].hash);
+                    resolve(response[0].hash);
+                }).catch((err) => {
+                    alert("IPFS 发生错误");
+                    window.location.reload();
+                });
+            };
+            reader.readAsArrayBuffer(f);
         });
     }
 };
@@ -121,7 +123,7 @@ $(function () {
     });
 
     // 验证表单
-    $("#publishForm").validate({
+    $("#form").validate({
         rules: {
             name: {
                 required: true,

@@ -23,73 +23,60 @@ App = {
 
     ////////////////////////////////////////////////////////////////////////////////
 
-    getGames: function () {
-        store.deployed().then(function (storeInstance) {
-            storeInstance.getGameLength.call().then(function (result) {
-                window.totalNum = result;
-                $("#pagination").pagination(totalNum, {
-                    callback: App.pageCallback,
-                    prev_text: '<<<',
-                    next_text: '>>>',
-                    ellipse_text: '...',
-                    current_page: 0, // 当前选中的页面
-                    items_per_page: 8, // 每页显示的条目数
-                    num_display_entries: 4, // 连续分页主体部分显示的分页条目数
-                    num_edge_entries: 1 // 两侧显示的首尾分页的条目数
-                });
-            }).catch(function (err) {
-                alert("内部错误: " + err);
-            });
+    getGames: async function () {
+        window.totalNum = await App._getGameLength();
+        $("#pagination").pagination(totalNum, {
+            callback: App.pageCallback,
+            prev_text: '<<<',
+            next_text: '>>>',
+            ellipse_text: '...',
+            current_page: 0, // 当前选中的页面
+            items_per_page: 8, // 每页显示的条目数
+            num_display_entries: 4, // 连续分页主体部分显示的分页条目数
+            num_edge_entries: 1 // 两侧显示的首尾分页的条目数
         });
     },
 
-    pageCallback: function (index, jq) {
-        console.log(index);
+    pageCallback: async function (index, jq) {
         $("#games").html('');
-
         var start = index * 8; // 开始
         var end = Math.min((index + 1) * 8, totalNum); // 结束
+        var content = '';
         for (var i = start; i < end; i++) {
-            let id = i; // note: var id = i; false
-            store.deployed().then(function (storeInstance) {
-                storeInstance.getGameInfo.call(id).then(function (result) {
-                    var content = '';
-                    content += '<div class="col-sm-6 col-md-3" >'
-                        + '<div class="thumbnail">'
-                        + '<a href="game.html?id=' + id + '">'
-                        + '<div style="position: relative;">'
-                        + '<img id="cover" class="img-cover" src="' + result[9] + '" alt="游戏封面"/>'
-                        + '<figcaption id="name" class="img-caption">' + result[1] + '</figcaption>'
-                        + '</div>'
-                        + '</a>'
-                        + '<div class="caption">'
-                        + '<table class="dashed_tbl">'
-                        + '<tr>'
-                        + '<td>销量: <samp id="sales">' + result[6] + '</samp></td>'
-                        + '<td>评分: <samp id="score">' + result[7] + '</samp></td>'
-                        + '</tr>'
-                        + '</table>'
-                        + '<span class="label label-info">类型</span>'
-                        + '<samp id="style">' + result[2] + '</samp>'
-                        + '<br/>'
-                        + '<span class="label label-info">简介</span>'
-                        + '<samp id="intro">' + result[3].substr(0, 20) + '......</samp>'
-                        + '<br/>'
-                        + '<span class="label label-info">玩法</span>'
-                        + '<samp id="rules">' + result[4].substr(0, 20) + '......</samp>'
-                        + '<div align="center">'
-                        + '<button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal" onclick="App.set(' + id + ')">'
-                        + '购买$ ' + (result[5])
-                        + '</button>'
-                        + '</div>'
-                        + '</div>'
-                        + '</div>';
-                    $("#games").append(content);
-                }).catch(function (err) {
-                    alert("内部错误: " + err);
-                });
-            });
+            var result = await App._getGameInfo(i);
+            content += '<div class="col-sm-6 col-md-3" >'
+                + '<div class="thumbnail">'
+                + '<a href="game.html?id=' + i + '">'
+                + '<div style="position: relative;">'
+                + '<img id="cover" class="img-cover" src="' + result[9] + '" alt="游戏封面"/>'
+                + '<figcaption id="name" class="img-caption">' + result[1] + '</figcaption>'
+                + '</div>'
+                + '</a>'
+                + '<div class="caption">'
+                + '<table class="dashed_tbl">'
+                + '<tr>'
+                + '<td>销量: <samp id="sales">' + result[6] + '</samp></td>'
+                + '<td>评分: <samp id="score">' + result[7] + '</samp></td>'
+                + '</tr>'
+                + '</table>'
+                + '<span class="label label-info">类型</span>'
+                + '<samp id="style">' + result[2] + '</samp>'
+                + '<br/>'
+                + '<span class="label label-info">简介</span>'
+                + '<samp id="intro">' + result[3].substr(0, 20) + '......</samp>'
+                + '<br/>'
+                + '<span class="label label-info">玩法</span>'
+                + '<samp id="rules">' + result[4].substr(0, 20) + '......</samp>'
+                + '<div align="center">'
+                + '<button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal" onclick="App.set(' + i + ')">'
+                + '购买$ ' + (result[5])
+                + '</button>'
+                + '</div>'
+                + '</div>'
+                + '</div>'
+                + '</div>';
         }
+        $("#games").append(content);
     },
 
     set: function (_id) {
@@ -115,6 +102,32 @@ App = {
                         $("#modal").modal('hide');
                     });
                 }
+            });
+        });
+    },
+
+    ////////////////////////////////////////////////////////////////////////////////
+
+    _getGameLength: function () {
+        return new Promise(function (resolve, reject) {
+            store.deployed().then(function (storeInstance) {
+                storeInstance.getGameLength.call().then(function (result) {
+                    resolve(result);
+                }).catch(function (err) {
+                    alert("内部错误: " + err);
+                });
+            });
+        });
+    },
+
+    _getGameInfo: function (id) {
+        return new Promise(function (resolve, reject) {
+            store.deployed().then(function (storeInstance) {
+                storeInstance.getGameInfo.call(id).then(function (result) {
+                    resolve(result);
+                }).catch(function (err) {
+                    alert("内部错误: " + err);
+                });
             });
         });
     }
