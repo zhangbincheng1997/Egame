@@ -58,8 +58,9 @@ App = {
     pageCallback: async function (index, jq) {
         $("#bg").hide();
         $("#games").html('');
-        var start = index * 8; // 开始
-        var end = Math.min((index + 1) * 8, totalNum); // 结束
+        var pageNum = 8;
+        var start = index * pageNum; // 开始
+        var end = Math.min((index + 1) * pageNum, totalNum); // 结束
         var content = '';
         for (var i = start; i < end; i++) {
             var result = await App._getGameInfo(gameList[i]);
@@ -151,7 +152,7 @@ App = {
             storeInstance.evaluate(evaluateId, evaluateScore, content, {
                 from: web3.eth.accounts[0],
             }).then(function (result) {
-                alert("评价成功");
+                alert("评价成功,等待写入区块!");
                 $('#modal').modal('hide');
             }).catch(function (err) {
                 alert("评价失败: " + err);

@@ -1,4 +1,4 @@
-# 基于 Ethereum 和 IPFS 的游戏平台
+# 基于 Ethereum & IPFS 的去中心化游戏平台
 游戏平台只是一个简单演示，方便迁移到其他项目。
 
 ## 项目展示
@@ -12,7 +12,7 @@
 ![alt text](docs/4.png "title")
 5. 游戏展示
 ![alt text](docs/5.png "title")
-6. 其他功能: 查看已购买的游戏、查看已发布的游戏、开始游戏(伪)......
+6. 其他功能: 查看已购买的游戏、查看已发布的游戏、开始游戏......
 7. 后续功能: 搜索、分类、游戏排行、最新资讯、帮助中心......
 代币合约可以采用[ERC20 代币标准](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md)
 
@@ -84,6 +84,8 @@ $ ipfs daemon
 $ ./ganache
 # 进入工作空间
 $ cd mygame
+# 安装项目依赖
+$ npm install
 # 编译
 $ truffle compile
 # 部署

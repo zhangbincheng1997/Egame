@@ -70,7 +70,7 @@ App = {
                         from: web3.eth.accounts[0],
                         gas: 140000
                     }).then(function (result) {
-                        alert("购买成功");
+                        alert("购买成功,等待写入区块!");
                     }).catch(function (err) {
                         alert("购买失败: " + err);
                     });

@@ -53,7 +53,7 @@ App = {
             storeInstance.publish(name, style, intro, rules, price, cover, file, {
                 from: web3.eth.accounts[0]
             }).then(function (result) {
-                alert("发布成功");
+                alert("发布成功,等待写入区块!");
                 window.location.reload();
             }).catch(function (err) {
                 alert("发布失败: " + err);

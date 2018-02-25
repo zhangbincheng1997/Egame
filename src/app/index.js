@@ -26,10 +26,10 @@ App = {
     getBalanceInfo: async function () {
         var result = await App._getBalanceInfo();
         window.all_yxb = result[2].toNumber();
-        var all_eth = (result[3] / 1e18).toFixed(3);
+        var all_eth = (web3.eth.fromWei(result[3])).toFixed(3);
         window.my_yxb = result[4].toNumber();
-        var my_eth = (result[5] / 1e18).toFixed(3);
-        window.rate = result[1] / 1e18;
+        var my_eth = (web3.eth.fromWei(result[5])).toFixed(3);
+        window.rate = web3.eth.fromWei(result[1]);
         $("#all_yxb").html(all_yxb);
         $("#all_eth").html(all_eth);
         $("#my_yxb").html(my_yxb);
@@ -47,7 +47,7 @@ App = {
                 value: web3.toWei(num * rate, 'ether'),
                 gas: 140000
             }).then(function (result) {
-                alert("兑换成功");
+                alert("兑换成功,等待写入区块!");
                 window.location.reload();
             }).catch(function (err) {
                 alert("兑换失败: " + err);
@@ -64,7 +64,7 @@ App = {
                 from: web3.eth.accounts[0],
                 gas: 140000
             }).then(function (result) {
-                alert("兑换成功");
+                alert("兑换成功,等待写入区块!");
                 window.location.reload();
             }).catch(function (err) {
                 alert("兑换失败: " + err);

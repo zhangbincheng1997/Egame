@@ -39,8 +39,9 @@ App = {
 
     pageCallback: async function (index, jq) {
         $("#games").html('');
-        var start = index * 8; // 开始
-        var end = Math.min((index + 1) * 8, totalNum); // 结束
+        var pageNum = 8;
+        var start = index * pageNum; // 开始
+        var end = Math.min((index + 1) * pageNum, totalNum); // 结束
         var content = '';
         for (var i = start; i < end; i++) {
             var result = await App._getGameInfo(i);
@@ -95,7 +96,7 @@ App = {
                         from: web3.eth.accounts[0],
                         gas: 140000
                     }).then(function (result) {
-                        alert("购买成功");
+                        alert("购买成功,等待写入区块!");
                         $("#modal").modal('hide');
                     }).catch(function (err) {
                         alert("购买失败: " + err);
